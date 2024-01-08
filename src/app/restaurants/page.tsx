@@ -41,6 +41,7 @@ const Page: React.FC = () => {
 
   const [restaurants, setRestaurants] = useState<IRestaurant[]>([]);
   const [selectedCuisine,setSelectedCuisine] = useState<string | "">("")
+  const [filteredArray,setFilteredArray] = useState<string[]>([])
   const fetchRestaurant = async () => {
     try {
       const response = await fetch("/assets/restaurants.json", {
@@ -50,7 +51,7 @@ const Page: React.FC = () => {
         },
       });
       const result = await response.json();
-      console.log("result");
+      // console.log("result");
       console.log(result);
       setRestaurants(result);
     } catch (err) {
@@ -63,8 +64,26 @@ const Page: React.FC = () => {
   }, []);
   let resCuisines = restaurants.map((el) => el.cuisine);
   resCuisines = [...new Set(resCuisines)].sort();
-  console.log(resCuisines);
-  const handleSelectedCuisine = ()=>{}
+  console.log("resCuisines length::",resCuisines.length)
+
+  const filteredCuisines = ()=>{
+    const items = restaurants.filter((el) => el.cuisine === selectedCuisine);
+    console.log("items:::",items)
+  // const cuisines = items.map((el) => el.cuisine);
+  // console.log("cuisines:::",cuisines)
+  // setFilteredArray(cuisines);
+  // console.log("filteredArray", cuisines);
+    
+  }
+  useEffect(()=>{
+    filteredCuisines()
+    console.log(filteredArray)
+  },[selectedCuisine])
+  const handleSelectedCuisine = (e:any)=>{
+    e.preventDefault()
+    filteredCuisines()
+    
+  }
   return (
     <div>
       <div>
@@ -74,13 +93,13 @@ const Page: React.FC = () => {
       <div className="m-8">        
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="col-span-1">
-            <select className="w-80 rounded-sm" id="" onChange={handleSelectedCuisine} value={selectedCuisine}>
-              {/* Add your select options here */}
+            <select 
+            onChange={handleSelectedCuisine} value={selectedCuisine}
+            className="w-80 rounded-sm" id="" >
               <option value="">--Select Your Cuisine--</option>
               {resCuisines.length >0 && resCuisines.map((el)=>(
                 <option key={el} value={el}>{el}</option>
               ))}
-              
             </select>
           </div>
           <div className="col-span-3">
