@@ -13,7 +13,7 @@ const NavBar = () => {
     <div className="m-8">
       <div className="flex flex-row ">
         <div className="flex w-1/6 h-16 bg-pink text-blue-800 text-lg justify-center items-center">
-          <Link href="/" className="text-center">
+          <Link href="/">
             HOME
           </Link>
         </div>
