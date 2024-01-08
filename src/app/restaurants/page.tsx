@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import NavBar from "@/components/NavBar";
+import Link from 'next/link'
 
 interface IRestaurant {
   restaurant_id: string;
@@ -40,8 +41,8 @@ const Card: React.FC<{ res: IRestaurant }>  = ({ res }: { res: IRestaurant }) =>
 const Page: React.FC = () => {
 
   const [restaurants, setRestaurants] = useState<IRestaurant[]>([]);
-  const [selectedCuisine,setSelectedCuisine] = useState<string | "">("")
-  const [filteredArray,setFilteredArray] = useState<string[]>([])
+  const [selectedCuisine,setSelectedCuisine] = useState<string>("")
+  const [filteredArray,setFilteredArray] = useState<IRestaurant[]>([])
   const fetchRestaurant = async () => {
     try {
       const response = await fetch("/assets/restaurants.json", {
@@ -52,7 +53,7 @@ const Page: React.FC = () => {
       });
       const result = await response.json();
       // console.log("result");
-      console.log(result);
+      // console.log(result);
       setRestaurants(result);
     } catch (err) {
       console.log("Failed to fetch restaurants:: ", err);
@@ -64,26 +65,30 @@ const Page: React.FC = () => {
   }, []);
   let resCuisines = restaurants.map((el) => el.cuisine);
   resCuisines = [...new Set(resCuisines)].sort();
-  console.log("resCuisines length::",resCuisines.length)
+  // console.log("resCuisines length::",resCuisines.length)
 
   const filteredCuisines = ()=>{
     const items = restaurants.filter((el) => el.cuisine === selectedCuisine);
     console.log("items:::",items)
-  // const cuisines = items.map((el) => el.cuisine);
-  // console.log("cuisines:::",cuisines)
-  // setFilteredArray(cuisines);
-  // console.log("filteredArray", cuisines);
-    
+    if(items){
+      setFilteredArray(items)  
+    }      
+    return items
   }
   useEffect(()=>{
     filteredCuisines()
-    console.log(filteredArray)
+    
   },[selectedCuisine])
+
+  useEffect(() => {
+    console.log('filteredArray:', filteredArray);
+  }, [filteredArray]);
   const handleSelectedCuisine = (e:any)=>{
     e.preventDefault()
-    filteredCuisines()
-    
+    setSelectedCuisine(e.target.value)
+    filteredCuisines()    
   }
+  const displayArray = selectedCuisine ? filteredArray : restaurants
   return (
     <div>
       <div>
@@ -93,6 +98,7 @@ const Page: React.FC = () => {
       <div className="m-8">        
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="col-span-1">
+            <p><i>Items found: {displayArray.length}</i></p>
             <select 
             onChange={handleSelectedCuisine} value={selectedCuisine}
             className="w-80 rounded-sm" id="" >
@@ -104,8 +110,8 @@ const Page: React.FC = () => {
           </div>
           <div className="col-span-3">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {restaurants.length > 0 &&
-              restaurants.map((res: IRestaurant) => (
+            {displayArray.length > 0 &&
+              displayArray.map((res: IRestaurant) => (
                 <div
                   key={res.restaurant_id}
                   className="gap-4 bg-white p-4 m-2 rounded-md shadow-md"
@@ -116,8 +122,10 @@ const Page: React.FC = () => {
           </div>
           </div>
         </div>
+      </div><hr/>
+      <div >
+        <div className="flex justify-center items-center">&#169; 2024&nbsp;by &nbsp;<Link href="https://www.linkedin.com/in/hon-nguyen/" target="_blank">Hon T. N.</Link></div>
       </div>
-      <div className="">footer</div>
     </div>
   );
 };
