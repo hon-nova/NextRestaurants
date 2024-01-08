@@ -10,17 +10,17 @@ const NavBar = () => {
       router.push(targetRoute)
    }
   return (
-    <div>
+    <div className="m-8">
       <div className="flex flex-row ">
-        <div className="flex w-1/6 bg-pink text-lg text-blue-600 justify-center items-center">
+        <div className="flex w-1/6 h-16 bg-pink text-blue-800 text-lg justify-center items-center">
           <Link href="/" className="text-center">
             HOME
           </Link>
         </div>
-        <div className="flex w-1/6 bg-green text-red-600 justify-center items-center">
+        <div className="flex w-1/6 bg-green text-red-800 justify-center items-center">
           <Link href="/restaurants">RESTAURANT</Link>
         </div>
-        <div className="flex w-1/6 bg-orange text-green-600 justify-center items-center">
+        <div className="flex w-1/6 bg-orange text-green-800 justify-center items-center">
           <Link href="/contact">CONTACT</Link>
         </div>
         <div className="flex w-1/6 bg-blue text-yellow-600 justify-center items-center">
@@ -34,6 +34,9 @@ const NavBar = () => {
          </select>
        </div>
         {/* end dropdown */}
+        <div className="flex w-1/6 bg-blue text-yellow-600 justify-center items-center">
+          <Link href="/login">LOG IN</Link>
+        </div>
       </div>
     </div>
   );
