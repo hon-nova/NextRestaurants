@@ -27,7 +27,7 @@ const NavBar = () => {
           <Link href="/author">ABOUT AUTHOR</Link>
         </div>
        <div className="flex w-1/6 justify-center items-center">
-         <select name="" id="" onChange={handleSelectedRoute} value={router.pathname}>
+         <select name="" id="" onChange={handleSelectedRoute}>
                <option value="">Email Address</option>
                <option value="/profile">My Profile</option>
             <option value="/logout">Log out</option>

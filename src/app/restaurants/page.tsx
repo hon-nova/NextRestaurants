@@ -29,9 +29,9 @@ const Card: React.FC<{ res: IRestaurant }>  = ({ res }: { res: IRestaurant }) =>
       </p>
       <p className="text-gray-600">
         {res.grades.length > 0 &&
-          `Average Score: ${
-            res.grades.reduce((acc: any, item:any) => acc + item.score, 0) /
-            res.grades.length
+          `Average Score: ${(
+            res.grades.reduce((acc: any, item: any) => acc + item.score, 0) /
+            res.grades.length).toFixed(2)
           }`}
       </p>
       <h4>Borough: {res.borough}</h4>
@@ -64,8 +64,7 @@ const Page: React.FC = () => {
     fetchRestaurant();
   }, []);
   let resCuisines = restaurants.map((el) => el.cuisine);
-  resCuisines = [...new Set(resCuisines)].sort();
-  // console.log("resCuisines length::",resCuisines.length)
+  resCuisines = [...new Set(resCuisines)].sort();  
 
   const filteredCuisines = ()=>{
     const items = restaurants.filter((el) => el.cuisine === selectedCuisine);
@@ -89,6 +88,8 @@ const Page: React.FC = () => {
     filteredCuisines()    
   }
   const displayArray = selectedCuisine ? filteredArray : restaurants
+  const numbButtons = Math.ceil(displayArray.length/36) //705
+  console.log(numbButtons)
   return (
     <div>
       <div>
@@ -109,17 +110,20 @@ const Page: React.FC = () => {
             </select>
           </div>
           <div className="col-span-3">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {displayArray.length > 0 &&
-              displayArray.map((res: IRestaurant) => (
-                <div
-                  key={res.restaurant_id}
-                  className="gap-4 bg-white p-4 m-2 rounded-md shadow-md"
-                >
-                  <div className=""><Card res={res} /></div>
-                </div>
-              ))}
-          </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {displayArray.length > 0 &&
+                displayArray.map((res: IRestaurant) => (
+                  <div
+                    key={res.restaurant_id}
+                    className="gap-4 bg-white p-4 m-2 rounded-md shadow-md"
+                  >
+                    <div className=""><Card res={res} /></div>
+                  </div>
+                ))}
+            </div>
+            <div>Pagination
+
+            </div>
           </div>
         </div>
       </div><hr/>
